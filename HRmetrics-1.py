@@ -7,10 +7,11 @@ import os
 # Set your Google API key from Streamlit secrets
 os.environ['GOOGLE_API_KEY'] = st.secrets['GOOGLE_API_KEY']
 
-# Prompt Template with option to include formulas
+# Prompt Template requesting metrics from basic to advanced
 HR_Metrics_template = (
-    "Give me {number} HR Metrics on the topic '{topic}'. "
-    "{formula_instruction} Present the output in a clear, simple format."
+    "Provide {number} HR metrics on the topic: '{topic}'. "
+    "Cover a range from basic to advanced level. {formula_instruction} "
+    "Present the output in a clear and simple format."
 )
 
 HR_Metrics_prompt = PromptTemplate(
@@ -28,44 +29,41 @@ HR_Metrics_chain = HR_Metrics_prompt | gemini_model
 
 st.set_page_config(page_title="HR Metrics Generator", layout="centered")
 st.title("📊 HR Metrics Generator - Sumedha")
-st.subheader("Generate insightful HR Metrics with simple formulas")
+st.subheader("From Beginner to Advanced – Generate Powerful HR Metrics")
 
-st.markdown("Use this tool to generate HR metrics for any HR domain. Ideal for HR Professionals")
+st.markdown("Use this tool to generate HR metrics for **any** topic – customized for your specific need!")
 
-# Topic options
-topics = [
-    "Employee Engagement", "Attrition", "Performance Management", "Learning & Development",
-    "Recruitment", "Compensation & Benefits", "HR Analytics", "Workforce Planning"
-]
+# Topic Input (Open-ended)
+topic = st.text_input("🧠 Enter your HR Topic", placeholder="e.g. Remote Work Productivity, Training ROI, Candidate Experience", help="You can enter any topic related to HR you'd like metrics on")
 
-# UI Components
-topic = st.selectbox("🔍 Select HR Topic", options=topics, help="Pick a domain to generate relevant metrics")
-
+# Number selector
 number = st.slider("🔢 Number of Metrics", min_value=1, max_value=10, value=3, step=1, help="Select how many metrics to generate")
 
+# Formula toggle
 include_formula = st.checkbox("➕ Include Simple Formulas", value=True)
 
 # Generate button
 if st.button("🚀 Generate HR Metrics"):
-    formula_instruction = "Include a simple formula for each metric." if include_formula else "Do not include formulas."
-    
-    # Invoke the chain
-    with st.spinner("Generating HR Metrics..."):
-        response = HR_Metrics_chain.invoke({
-            "number": number,
-            "topic": topic,
-            "formula_instruction": formula_instruction
-        })
+    if not topic.strip():
+        st.warning("Please enter a topic to generate HR metrics.")
+    else:
+        formula_instruction = "Include a simple formula for each metric." if include_formula else "Do not include formulas."
+        
+        with st.spinner("Generating HR Metrics from easy to advanced..."):
+            response = HR_Metrics_chain.invoke({
+                "number": number,
+                "topic": topic,
+                "formula_instruction": formula_instruction
+            })
 
-        # Display results
-        st.markdown("### 📌 Generated Metrics")
-        st.markdown(response.content)
+            # Output
+            st.markdown("### 📌 Generated Metrics (Easy ➡️ Advanced)")
+            st.markdown(response.content)
 
-        st.success("✅ Metrics generated successfully!")
+            st.success("✅ Metrics generated successfully!")
 
-        st.markdown("---")
-        st.markdown("### 📈 Summary & Use")
-        st.markdown(f"These metrics can help in understanding and improving **{topic}** processes. "
-                    "Use them in HR dashboards, performance reviews, or data analysis.")
+            st.markdown("---")
+            st.markdown("### 📈 Summary & Use")
+            st.markdown(f"These metrics on **{topic}** range from foundational to complex. Use them for deeper insights, performance tracking, or reporting.")
 
-st.caption("Built with 💙 using LangChain & Google Gemini")
+st.caption("Built with 💙 using LangChain & Gemini")

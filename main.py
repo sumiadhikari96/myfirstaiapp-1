@@ -11,7 +11,7 @@ os.environ['GOOGLE_API_KEY'] = st.secrets['GOOGLE_API_KEY']
 
 HR_Metrics_template = "Give me {number} HR Metrics on {topic}"
 
-Hr_Metrics_prompt = PromptTemplate(template = HR_Metrics_template, input_variables = ['number', 'topic'])
+HR_Metrics_prompt = PromptTemplate(template = HR_Metrics_template, input_variables = ['number', 'topic'])
 
 # Initialize Google's Gemini model
 gemini_model = ChatGoogleGenerativeAI(model = "gemini-1.5-flash-latest")

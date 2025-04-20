@@ -18,7 +18,7 @@ gemini_model = ChatGoogleGenerativeAI(model = "gemini-1.5-flash-latest")
 
 
 # Create LLM chain using the prompt template and model
-HR_Metrics_chain = HR_Metrics_prompt | gemini_model 
+HR_Metrics_chain = HR_Metrics_prompt | gemini_model
 
 
 import streamlit as st

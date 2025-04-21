@@ -29,7 +29,7 @@ gemini_model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest")
 Interview_chain = Interview_prompt | gemini_model
 
 # Streamlit UI
-st.header("InterviewGuru" - by Sumedha")
+st.header("Interview Questionnaire Bank - Sumedha")
 
 st.subheader("Generate Interview Questions for Any Job Role")
 

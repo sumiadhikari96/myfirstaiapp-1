@@ -29,23 +29,29 @@ gemini_model = ChatGoogleGenerativeAI(model="gemini-1.5-flash-latest")
 Interview_chain = Interview_prompt | gemini_model
 
 # Streamlit UI
-st.header("Interview Questionnaire Bank - Sumedha")
+st.set_page_config(page_title="Interview Guru – by Sumedha", page_icon="🎤")
+st.title("🎤 Interview Guru – by Sumedha")
+st.subheader("🚀 Generate Tailored Interview Questions for Any Role")
 
-st.subheader("Generate Interview Questions for Any Job Role")
+st.markdown("""
+Welcome to **Interview Guru**! 🎓  
+Just fill in the details below and click **Generate** to get a list of smart, tailored interview questions.  
+Perfect for recruiters, candidates, and educators alike! 👥  
+""")
 
 # User Inputs
-job_role = st.text_input("Job Role (e.g., Data Analyst, Software Engineer)")
+job_role = st.text_input("🧑‍💼 Job Role (e.g., Data Analyst, Software Engineer)")
 
-experience = st.number_input("Years of Experience", min_value=0, max_value=30, value=2, step=1)
+experience = st.number_input("📅 Years of Experience", min_value=0, max_value=30, value=2, step=1)
 
-difficulty = st.selectbox("Difficulty Level", ["Easy", "Medium", "Hard"])
+difficulty = st.selectbox("📊 Difficulty Level", ["Easy", "Medium", "Hard"])
 
-skills = st.text_input("Specific Skills (optional, comma-separated)")
+skills = st.text_input("🛠️ Specific Skills (optional, comma-separated)")
 
-number = st.number_input("Number of Questions", min_value=1, max_value=20, value=5, step=1)
+number = st.number_input("❓ Number of Questions", min_value=1, max_value=20, value=5, step=1)
 
 # Generate Button
-if st.button("Generate"):
+if st.button("🎯 Generate Questions"):
     skills_clause = f"Focus on these skills: {skills}." if skills else "No specific skills provided."
     
     interview_questions = Interview_chain.invoke({
@@ -56,5 +62,5 @@ if st.button("Generate"):
         "skills_clause": skills_clause
     })
 
-    st.markdown("### Generated Interview Questions")
+    st.markdown("### 📝 Generated Interview Questions")
     st.write(interview_questions.content)
